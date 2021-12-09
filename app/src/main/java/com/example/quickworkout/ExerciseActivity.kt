@@ -4,10 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import com.example.quickworkout.model.ExerciseModel
 
 class ExerciseActivity : AppCompatActivity() {
 
@@ -17,6 +15,12 @@ class ExerciseActivity : AppCompatActivity() {
     private var exerciseTimer: CountDownTimer? = null
     private var exerciseProgress: Int = 0
     private var exerciseProgressDuration: Long = 30
+
+    private var exerciseList: ArrayList<ExerciseModel>? = null
+    private var currentExercisePosition: Int = -1
+
+    private lateinit var exerciseImage: ImageView
+    private lateinit var exerciseName: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +36,11 @@ class ExerciseActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
-        setUpRestTimer()
+        setUpRestView()
+
+        exerciseList = Constants.defaultExerciseList()
+        exerciseImage = findViewById(R.id.exerciseImg)
+        exerciseName = findViewById(R.id.tvExerciseName)
     }
 
     override fun onDestroy() {
@@ -58,13 +66,20 @@ class ExerciseActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                setupExerciseTimer()
+                currentExercisePosition++
+                setupExerciseView()
             }
 
         }.start()
     }
 
-    private fun setUpRestTimer() {
+    private fun setUpRestView() {
+        val restViewLayout = findViewById<LinearLayout>(R.id.llRestView)
+        val exerciseViewLayout = findViewById<LinearLayout>(R.id.llExerciseView)
+
+        restViewLayout.visibility = View.VISIBLE
+        exerciseViewLayout.visibility = View.GONE
+
         if (restTimer != null) {
             restTimer!!.cancel()
             restProgress = 0
@@ -85,17 +100,21 @@ class ExerciseActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                Toast.makeText(
-                    this@ExerciseActivity,
-                    "Here we will start the next rest screen",
-                    Toast.LENGTH_SHORT
-                ).show()
+                if (currentExercisePosition < exerciseList?.size!! - 1) {
+                    setUpRestView()
+                } else {
+                    Toast.makeText(
+                        this@ExerciseActivity,
+                        "Congratulations, You have completed 7 minutes of workout!!!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
 
         }.start()
     }
 
-    private fun setupExerciseTimer() {
+    private fun setupExerciseView() {
 
         val restViewLayout = findViewById<LinearLayout>(R.id.llRestView)
         val exerciseViewLayout = findViewById<LinearLayout>(R.id.llExerciseView)
@@ -108,5 +127,8 @@ class ExerciseActivity : AppCompatActivity() {
             exerciseProgress = 0
         }
         setExerciseProgressBar()
+
+        exerciseImage.setImageResource(exerciseList!![currentExercisePosition].getImage())
+        exerciseName.text = exerciseList!![currentExercisePosition].getName()
     }
 }
