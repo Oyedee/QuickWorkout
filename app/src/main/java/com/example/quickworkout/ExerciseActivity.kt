@@ -1,5 +1,6 @@
 package com.example.quickworkout
 
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import com.example.quickworkout.model.ExerciseModel
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -27,6 +29,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var exerciseName: TextView
 
     private var tts: TextToSpeech? = null
+    private var player: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +71,11 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             tts!!.stop()
             tts!!.shutdown()
         }
+
+        if (player != null) {
+            player!!.stop()
+        }
+
         super.onDestroy()
     }
 
@@ -95,6 +103,14 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private fun setUpRestView() {
         val restViewLayout = findViewById<LinearLayout>(R.id.llRestView)
         val exerciseViewLayout = findViewById<LinearLayout>(R.id.llExerciseView)
+
+        try {
+            player = MediaPlayer.create(applicationContext, R.raw.press_start)
+            player!!.isLooping = false
+            player!!.start()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
         restViewLayout.visibility = View.VISIBLE
         exerciseViewLayout.visibility = View.GONE
