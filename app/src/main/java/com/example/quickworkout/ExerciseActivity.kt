@@ -8,6 +8,7 @@ import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.recyclerview.widget.RecyclerView
 import com.example.quickworkout.model.ExerciseModel
 import java.lang.Exception
 import java.util.*
@@ -31,6 +32,9 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var tts: TextToSpeech? = null
     private var player: MediaPlayer? = null
 
+    private var exerciseAdapter: ExerciseStatusAdapter? = null
+    private lateinit var exerciseRecyclerView: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercise)
@@ -47,11 +51,13 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
         exerciseImage = findViewById(R.id.exerciseImg)
         exerciseName = findViewById(R.id.tvExerciseName)
+        exerciseRecyclerView = findViewById(R.id.rvExerciseStatus)
 
         tts = TextToSpeech(this, this)
 
         exerciseList = Constants.defaultExerciseList()
         setUpRestView()
+        setupExerciseStatusRecyclerView()
 
     }
 
@@ -183,5 +189,11 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private fun speakOut(text: String) {
         tts!!.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
+    }
+
+    //setup recyclerview
+    private fun setupExerciseStatusRecyclerView() {
+        exerciseAdapter = ExerciseStatusAdapter(exerciseList!!, this)
+        exerciseRecyclerView.adapter = exerciseAdapter
     }
 }
