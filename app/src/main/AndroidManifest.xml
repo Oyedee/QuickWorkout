@@ -10,9 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuickWorkout">
         <activity
+            android:name=".FinishActivity"
+            android:exported="false" />
+        <activity
             android:name=".ExerciseActivity"
             android:exported="false"
-            android:theme="@style/Theme.QuickWorkout"/>
+            android:theme="@style/Theme.QuickWorkout" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

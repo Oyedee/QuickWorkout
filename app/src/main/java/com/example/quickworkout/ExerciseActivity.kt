@@ -1,5 +1,6 @@
 package com.example.quickworkout
 
+import android.content.Intent
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -150,11 +151,9 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     exerciseAdapter!!.notifyDataSetChanged()
                     setUpRestView()
                 } else {
-                    Toast.makeText(
-                        this@ExerciseActivity,
-                        "Congratulations, You have completed 7 minutes of workout!!!",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    finish()
+                    val intent = Intent(this@ExerciseActivity, FinishActivity::class.java)
+                    startActivity(intent)
                 }
             }
 
