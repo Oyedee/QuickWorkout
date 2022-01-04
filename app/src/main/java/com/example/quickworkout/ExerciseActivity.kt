@@ -1,5 +1,6 @@
 package com.example.quickworkout
 
+import android.app.Dialog
 import android.content.Intent
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
@@ -48,7 +49,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
         toolbar.setNavigationOnClickListener {
-            onBackPressed()
+            customDialogForBackButton()
         }
         exerciseImage = findViewById(R.id.exerciseImg)
         exerciseName = findViewById(R.id.tvExerciseName)
@@ -199,5 +200,22 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private fun setupExerciseStatusRecyclerView() {
         exerciseAdapter = ExerciseStatusAdapter(exerciseList!!, this)
         exerciseRecyclerView.adapter = exerciseAdapter
+    }
+
+    //setup custom dialog box
+    private  fun customDialogForBackButton() {
+        val customDialog = Dialog(this)
+
+        customDialog.setContentView(R.layout.dialog_custom_back_confirmation)
+        //set action for button yes
+        customDialog.findViewById<Button>(R.id.tvYes).setOnClickListener {
+            finish()
+            customDialog.dismiss()
+        }
+        //set action for button No
+        customDialog.findViewById<Button>(R.id.tvNo).setOnClickListener {
+            customDialog.dismiss()
+        }
+        customDialog.show()
     }
 }
