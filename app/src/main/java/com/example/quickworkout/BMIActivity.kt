@@ -11,6 +11,7 @@ class BMIActivity : AppCompatActivity() {
     private lateinit var tvBMIValue: TextView
     private lateinit var tvBMIType: TextView
     private lateinit var tvBMIDescription: TextView
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bmiactivity)
@@ -20,12 +21,14 @@ class BMIActivity : AppCompatActivity() {
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.title = "Calculate BMI"
 
-        findViewById<Toolbar>(R.id.toolbar_bmi_activity).setNavigationOnClickListener {
+        toolbar = findViewById(R.id.toolbar_bmi_activity)
+
+        toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
-        tvBMIValue = findViewById<TextView>(R.id.tvBMIValue)
-        tvBMIType = findViewById<TextView>(R.id.tvBMIType)
-        tvBMIDescription = findViewById<TextView>(R.id.tvBMIDescription)
+        tvBMIValue = findViewById(R.id.tvBMIValue)
+        tvBMIType = findViewById(R.id.tvBMIType)
+        tvBMIDescription = findViewById(R.id.tvBMIDescription)
 
 
         findViewById<Button>(R.id.btnCalculateUnits).setOnClickListener {
